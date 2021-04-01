@@ -24,6 +24,10 @@ app.use(
 );
 
 // Routes Import
+const patients = require("../routes/patient.routes");
+const consulationRecords = require("../routes/consulation-record.routes");
+const consulationSchedules = require("../routes/consultation-schedule.routes");
+const auth = require("../routes/auth.routes");
 
 // INITIALIZATIONS
 // Http body parser
@@ -61,6 +65,10 @@ app.use(helmet());
 app.use(morgan("tiny"));
 
 // MOUNT routers
+app.use("/api/patients", patients);
+app.use("/api/records", consulationRecords);
+app.use("/api/schedules", consulationSchedules);
+app.use("/api/auth", auth);
 
 // Initialized Error Handler
 app.use(errorHandler);
