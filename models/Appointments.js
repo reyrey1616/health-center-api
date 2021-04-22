@@ -10,9 +10,22 @@ const AppointmentSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "Patients",
 		},
+		consultationRecord: {
+			type: Schema.Types.ObjectId,
+			ref: "ConsultationRecords",
+		},
 
 		queueNumber: Number,
 
+		type: {
+			type: String,
+			required: [true, "Consultation type is required"],
+		},
+		consultationForm: Object,
+
+		appointmentDate: {
+			type: Date,
+		},
 		appointmentStatus: {
 			type: String,
 			enum: ["Pending", "Attended", "Cancelled"],
@@ -22,6 +35,7 @@ const AppointmentSchema = new Schema(
 			type: Boolean,
 			default: true,
 		},
+
 		createdAt: {
 			type: Date,
 			default: Date.now,

@@ -9,13 +9,7 @@ exports.createPatient = asyncHandler(async (req, res, next) => {
 });
 
 exports.retrievePatients = asyncHandler(async (req, res, next) => {
-	const doc = await Patient.find({ status: true }).sort("-createdAt");
-
-	res.status(200).json({
-		success: true,
-		count: doc.length,
-		data: doc,
-	});
+	res.status(200).json(res.advancedResults);
 });
 
 exports.retrieveOnePatient = asyncHandler(async (req, res, next) => {

@@ -7,12 +7,17 @@ const {
 	updateOneAppointment,
 	retrieveAppointmentsByPatient,
 } = require("../controllers/appointment.controllers");
-// const { uploadSingle } = require("../middlewares/fileUpload");
+const advancedResults = require("../middlewares/advancedResult");
+const Appointments = require("../models/Appointments");
 
 router.post("/", createAppointment);
-router.get("/", retrieveAppointments);
-router.get("/patient/:id", retrieveAppointmentsByPatient);
+
+router.get("/", advancedResults(Appointments), retrieveAppointments);
+
 router.get("/:id", retrieveOneAppointment);
+
 router.put("/:id", updateOneAppointment);
+
+router.get("/patient/:id", retrieveAppointmentsByPatient);
 
 module.exports = router;

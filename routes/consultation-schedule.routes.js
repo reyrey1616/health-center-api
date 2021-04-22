@@ -6,10 +6,11 @@ const {
 	retrieveOneConsultationSchedule,
 	updateOneConsultationSchedule,
 } = require("../controllers/consulation-schedules.controllers");
-// const { uploadSingle } = require("../middlewares/fileUpload");
+const advancedResults = require("../middlewares/advancedResult");
+const Schedules = require("../models/ConsulationSchedules");
 
 router.post("/", createConsultationSchedule);
-router.get("/", retrieveConsultationSchedules);
+router.get("/", advancedResults(Schedules), retrieveConsultationSchedules);
 router.get("/:id", retrieveOneConsultationSchedule);
 router.put("/:id", updateOneConsultationSchedule);
 

@@ -21,7 +21,14 @@ const ScheduleSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-
+		slotsRemaining: {
+			type: Number,
+		},
+		startStatus: {
+			type: String,
+			enum: ["Pending", "Started", "Done"],
+			default: "Pending",
+		},
 		status: {
 			type: Boolean,
 			default: true,
@@ -32,8 +39,7 @@ const ScheduleSchema = new Schema(
 		},
 	},
 	{
-		toJSON: { virtuals: true },
-		toObject: { virtuals: true },
+		timestamps: true,
 	}
 );
 

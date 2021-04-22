@@ -28,6 +28,7 @@ const patients = require("../routes/patient.routes");
 const consulationRecords = require("../routes/consulation-record.routes");
 const consulationSchedules = require("../routes/consultation-schedule.routes");
 const auth = require("../routes/auth.routes");
+const appointments = require("../routes/appointment.routes");
 
 // INITIALIZATIONS
 // Http body parser
@@ -69,6 +70,7 @@ app.use("/api/patients", patients);
 app.use("/api/records", consulationRecords);
 app.use("/api/schedules", consulationSchedules);
 app.use("/api/auth", auth);
+app.use("/api/appointments", appointments);
 
 // Initialized Error Handler
 app.use(errorHandler);

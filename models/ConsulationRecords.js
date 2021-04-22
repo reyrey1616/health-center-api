@@ -10,9 +10,13 @@ const ConsulationRecordsSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "Schedules",
 		},
+		appointment: {
+			type: Schema.Types.ObjectId,
+			ref: "Appointments",
+		},
 		type: {
 			type: String,
-			required: [true, "Type of consulation is required is required"],
+			required: [true, "Type of consulation is required"],
 		},
 
 		appointmentDate: Date,
@@ -20,10 +24,15 @@ const ConsulationRecordsSchema = new Schema(
 
 		// Queue Number
 		queueNumber: String,
+
 		conducted: {
 			type: Boolean,
 			default: false,
 		},
+
+		conductedtDate: Date,
+		conductedtTime: Date,
+
 		status: {
 			type: Boolean,
 			default: true,
@@ -34,8 +43,7 @@ const ConsulationRecordsSchema = new Schema(
 		},
 	},
 	{
-		toJSON: { virtuals: true },
-		toObject: { virtuals: true },
+		timestamps: true,
 	}
 );
 

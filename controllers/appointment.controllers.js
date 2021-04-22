@@ -9,13 +9,7 @@ exports.createAppointment = asyncHandler(async (req, res, next) => {
 });
 
 exports.retrieveAppointments = asyncHandler(async (req, res, next) => {
-	const doc = await Appointment.find({ status: true }).sort("-createdAt");
-
-	res.status(200).json({
-		success: true,
-		count: doc.length,
-		data: doc,
-	});
+	res.status(200).json(res.advancedResults);
 });
 
 exports.retrieveAppointmentsByPatient = asyncHandler(async (req, res, next) => {

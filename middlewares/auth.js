@@ -5,7 +5,6 @@ const ErrorResponse = require("../utils/ErrorResponse");
 exports.protect = (model) =>
 	asyncHandler(async (req, res, next) => {
 		let token;
-		console.log(req.headers.authorization.red);
 		// If no cookie. the auth middleware will find the token in authorization header
 		if (
 			req.headers.authorization &&
