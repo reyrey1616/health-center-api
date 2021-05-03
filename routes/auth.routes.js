@@ -14,7 +14,7 @@ const AdminAccounts = require("../models/AdminAccounts");
 
 // Student
 router.post("/patient-login", login(Patient));
-router.post("/register", register);
+router.post("/patient-register", register);
 router.get("/get-patient", protect(Patient), getUserLoggedin(Patient));
 
 // Evaluator

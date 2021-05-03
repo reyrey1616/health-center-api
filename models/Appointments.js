@@ -21,6 +21,7 @@ const AppointmentSchema = new Schema(
 			type: String,
 			required: [true, "Consultation type is required"],
 		},
+
 		consultationForm: Object,
 
 		appointmentDate: {

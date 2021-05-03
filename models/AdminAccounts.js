@@ -45,6 +45,12 @@ const AdminSchema = new Schema(
 		city_municipality: String,
 		province: String,
 
+		familyPlanningData: {},
+		obstetricData: {},
+		individualTreatmentData: {},
+		cancerControlData: {},
+		nutritionistData: {},
+
 		status: {
 			type: Boolean,
 			default: true,

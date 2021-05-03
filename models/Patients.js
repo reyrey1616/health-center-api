@@ -43,13 +43,40 @@ const PatientsSchema = new Schema(
 		phoneNumber: String,
 		occupation: String,
 		educationalAttainment: String,
-
 		philHealthNumber: String,
+		religion: String,
+		civilStatus: String,
 
+		// Address
 		address: String,
 		brgy: String,
+		street: String,
 		city_municipality: String,
 		province: String,
+
+		weight: String,
+		height: String,
+
+		familyPlanning: {
+			type: Object,
+			default: null,
+		},
+		obstetric: {
+			type: Object,
+			default: null,
+		},
+		individualTreatment: {
+			type: Object,
+			default: null,
+		},
+		cancerControl: {
+			type: Object,
+			default: null,
+		},
+		nutritionist: {
+			type: Object,
+			default: null,
+		},
 
 		status: {
 			type: Boolean,

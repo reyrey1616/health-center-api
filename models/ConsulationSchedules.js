@@ -21,8 +21,10 @@ const ScheduleSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		slotsRemaining: {
+
+		nextSlotToGive: {
 			type: Number,
+			default: 1,
 		},
 		startStatus: {
 			type: String,

@@ -10,7 +10,7 @@ const {
 const advancedResults = require("../middlewares/advancedResult");
 const Appointments = require("../models/Appointments");
 
-router.post("/", createAppointment);
+router.post("/:scheduleId/:patientId", createAppointment);
 
 router.get("/", advancedResults(Appointments), retrieveAppointments);
 

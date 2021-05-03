@@ -38,8 +38,6 @@ exports.login = (model) =>
 	});
 
 //@desc  Get User Info via token
-//@route POST /api/v1/auth/get-info
-//@access Private/Admin/Customer/Logistics/
 exports.getUserLoggedin = (model) =>
 	asyncHandler(async (req, res, next) => {
 		const user = await model.findById(req.user.id);
@@ -50,9 +48,7 @@ exports.getUserLoggedin = (model) =>
 		});
 	});
 
-//@desc  Get User Info via token
-//@route POST /api/v1/auth/get-info
-//@access Private/Admin/Customer/Logistics/
+//@desc  Get Admin Info via token
 exports.getAdminLoggedin = (model) =>
 	asyncHandler(async (req, res, next) => {
 		const user = await model.findById(req.user.id);
@@ -68,14 +64,14 @@ exports.register = asyncHandler(async (req, res, next) => {
 	let doc = await Patients.create(req.body);
 	doc = await Patients.findById(doc._id);
 
-	res.status(201).json({ success: true, data: doc });
+	sendTokenResponse(doc, 200, res, doc.role);
 });
 
 // Admin Registration
 exports.adminRegister = asyncHandler(async (req, res, next) => {
-	let doc = await AdminAccounts.create(req.body);
+	let user = await AdminAccounts.create(req.body);
 
-	res.status(201).json({ success: true, data: doc });
+	sendTokenResponse(user, 200, res, user.role);
 });
 
 //@desc  Log user out / clear cookies
