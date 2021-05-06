@@ -9,17 +9,15 @@ exports.createConsultationSchedule = asyncHandler(async (req, res, next) => {
 });
 
 exports.retrieveConsultationSchedules = asyncHandler(async (req, res, next) => {
-	// const doc = await ConsultationSchedule.find({ status: true }).sort(
-	// 	"-createdAt"
-	// );
-
-	// res.status(200).json({
-	// 	success: true,
-	// 	count: doc.length,
-	// 	data: doc,
-	// });
-
 	res.status(200).json(res.advancedResults);
+});
+
+exports.retrieveConsultationsByDoctor = asyncHandler(async (req, res, next) => {
+	const doc = await ConsultationSchedule.find({
+		healthWorker: req.params.id,
+	});
+
+	res.status(200).json({ success: true, data: doc });
 });
 
 exports.retrieveOneConsultationSchedule = asyncHandler(

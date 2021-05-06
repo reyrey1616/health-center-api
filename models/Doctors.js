@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
-const AdminSchema = new Schema(
+const DoctorsSchema = new Schema(
 	{
 		email: {
 			type: String,
@@ -18,7 +18,6 @@ const AdminSchema = new Schema(
 			required: [true, "Password is required"],
 			select: false,
 		},
-		image: String,
 		fname: {
 			type: String,
 			required: [true, "Firstname is required!"],
@@ -65,7 +64,7 @@ const AdminSchema = new Schema(
 );
 
 // Encrypt using bcrypt
-AdminSchema.pre("save", async function (next) {
+DoctorsSchema.pre("save", async function (next) {
 	if (!this.isModified("password")) {
 		next();
 	}
@@ -74,15 +73,15 @@ AdminSchema.pre("save", async function (next) {
 });
 
 // Sign JWT and return
-AdminSchema.methods.getSignedJwtToken = function () {
+DoctorsSchema.methods.getSignedJwtToken = function () {
 	return JWT.sign({ id: this._id }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRE,
 	});
 };
 
 // Match user entered password to hash password in database
-AdminSchema.methods.matchPassword = async function (enteredPassword) {
+DoctorsSchema.methods.matchPassword = async function (enteredPassword) {
 	return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = Admin = mongoose.model("Admin", AdminSchema);
+module.exports = Doctor = mongoose.model("Doctor", DoctorsSchema);

@@ -3,6 +3,7 @@ const asyncHandler = require("../middlewares/asyncHandler");
 const sendTokenResponse = require("../utils/sendTokenResponse");
 const Patients = require("../models/Patients");
 const AdminAccounts = require("../models/AdminAccounts");
+const Doctors = require("../models/Doctors");
 
 //@desc  User Login
 //@route POST /api/v1/auth/customer-login
@@ -70,6 +71,13 @@ exports.register = asyncHandler(async (req, res, next) => {
 // Admin Registration
 exports.adminRegister = asyncHandler(async (req, res, next) => {
 	let user = await AdminAccounts.create(req.body);
+
+	sendTokenResponse(user, 200, res, user.role);
+});
+
+// Doctor Registration
+exports.doctorRegister = asyncHandler(async (req, res, next) => {
+	let user = await Doctors.create(req.body);
 
 	sendTokenResponse(user, 200, res, user.role);
 });

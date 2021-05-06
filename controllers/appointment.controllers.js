@@ -127,6 +127,10 @@ exports.retrieveAppointmentsByPatient = asyncHandler(async (req, res, next) => {
 	});
 });
 
+
+
+
+
 exports.retrieveOneAppointment = asyncHandler(async (req, res, next) => {
 	const doc = await Appointment.findById(req.params.id);
 

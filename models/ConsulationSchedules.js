@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ScheduleSchema = new Schema(
 	{
+		healthWorker: {
+			type: Schema.Types.ObjectId,
+			ref: "Doctor",
+		},
 		type: {
 			type: String,
 			required: [true, "Type of consulation is required is required"],
@@ -9,7 +13,6 @@ const ScheduleSchema = new Schema(
 
 		title: String,
 		description: String,
-		healthWorker: String,
 		numberOfSlot: Number,
 		consultationDate: Date,
 		consultationTime: Date,
