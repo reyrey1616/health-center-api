@@ -9,6 +9,9 @@ const {
 const advancedResults = require("../middlewares/advancedResult");
 const Patients = require("../models/Patients");
 
+router.get("/main", (req, res, next) => {
+	res.send("Hello");
+});
 router.post("/", createPatient);
 router.get("/", advancedResults(Patients), retrievePatients);
 router.get("/:id", retrieveOnePatient);
