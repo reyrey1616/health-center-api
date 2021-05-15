@@ -12,7 +12,7 @@ connectDB();
 require("./config/app");
 
 // Set the Server Port
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Set the server to listen to the Port 5000 and log if running
 const server = app.listen(PORT, () =>
