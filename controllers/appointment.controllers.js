@@ -118,7 +118,12 @@ exports.retrieveAppointmentsByPatient = asyncHandler(async (req, res, next) => {
 		patient: req.params.id,
 	})
 		.sort("-createdAt")
-		.populate("schedule");
+		.populate({
+			path: "schedule",
+			populate: {
+				path: "healthWorker",
+			},
+		});
 
 	res.status(200).json({
 		success: true,
@@ -126,10 +131,6 @@ exports.retrieveAppointmentsByPatient = asyncHandler(async (req, res, next) => {
 		data: doc,
 	});
 });
-
-
-
-
 
 exports.retrieveOneAppointment = asyncHandler(async (req, res, next) => {
 	const doc = await Appointment.findById(req.params.id);
@@ -156,6 +157,9 @@ exports.updateOneAppointment = asyncHandler(async (req, res, next) => {
 			)
 		);
 	}
+
+	console.log(req.body);
+	console.log(req.params.id);
 
 	const updateDoc = await Appointment.findByIdAndUpdate(
 		req.params.id,

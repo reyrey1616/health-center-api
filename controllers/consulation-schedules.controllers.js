@@ -57,5 +57,9 @@ exports.updateOneConsultationSchedule = asyncHandler(async (req, res, next) => {
 		}
 	);
 
-	res.status(200).json({ success: true, data: updateDoc });
+	doc = await ConsultationSchedule.findById(req.params.id).populate(
+		"healthWorker"
+	);
+
+	res.status(200).json({ success: true, data: doc });
 });

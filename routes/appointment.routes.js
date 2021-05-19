@@ -12,7 +12,11 @@ const Appointments = require("../models/Appointments");
 
 router.post("/:scheduleId/:patientId", createAppointment);
 
-router.get("/", advancedResults(Appointments), retrieveAppointments);
+router.get(
+	"/",
+	advancedResults(Appointments, ["schedule", "patient"]),
+	retrieveAppointments
+);
 
 router.get("/:id", retrieveOneAppointment);
 
