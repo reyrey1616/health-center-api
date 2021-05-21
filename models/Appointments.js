@@ -32,6 +32,10 @@ const AppointmentSchema = new Schema(
 			enum: ["Pending", "Attended", "Cancelled"],
 		},
 
+		remarks: {
+			type: String,
+		},
+
 		status: {
 			type: Boolean,
 			default: true,

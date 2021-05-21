@@ -54,7 +54,7 @@ const DoctorsSchema = new Schema(
 		},
 		role: {
 			type: String,
-			default: "admin",
+			default: "doctor",
 		},
 	},
 	{
