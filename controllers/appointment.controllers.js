@@ -158,9 +158,6 @@ exports.updateOneAppointment = asyncHandler(async (req, res, next) => {
 		);
 	}
 
-	console.log(req.body);
-	console.log(req.params.id);
-
 	const updateDoc = await Appointment.findByIdAndUpdate(
 		req.params.id,
 		req.body,
