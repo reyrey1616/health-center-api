@@ -3,6 +3,7 @@ const asyncHandler = require("../middlewares/asyncHandler");
 const Appointment = require("../models/Appointments");
 const Patient = require("../models/Patients");
 const Schedule = require("../models/ConsulationSchedules");
+const axios = require("axios");
 
 exports.createAppointment = asyncHandler(async (req, res, next) => {
 	const { scheduleId, patientId } = req.params;
@@ -156,6 +157,64 @@ exports.updateOneAppointment = asyncHandler(async (req, res, next) => {
 				404
 			)
 		);
+	}
+
+	const queueNumber = doc.queueNumber;
+	const scheduleId = doc.schedule;
+
+	const nextNumberToText = queueNumber + 3;
+	const currentNumberInQueue = queueNumber + 1;
+
+	const scheduleDoc = await Appointment.findOne({
+		schedule: scheduleId,
+		queueNumber: nextNumberToText,
+	});
+
+	if (scheduleDoc) {
+		const phoneNumber = scheduleDoc.consultationForm.phoneNumber;
+		if (scheduleDoc.numberOfSlot >= nextNumberToText) {
+			console.log("TRIGGER SMS");
+			var options = {
+				method: "POST",
+				url: "https://clicksend.p.rapidapi.com/sms/send",
+				headers: {
+					"content-type": "application/json",
+					authorization:
+						"Basic a29sZW50YWJzQGdtYWlsLmNvbTpDb2xsZWVuMTIzQA==",
+					"x-rapidapi-key":
+						"66f1f0c9f8mshb5406ad89911fb6p113c85jsn16798b95eeb4",
+					"x-rapidapi-host": "clicksend.p.rapidapi.com",
+				},
+				data: {
+					messages: [
+						{
+							source: "mashape",
+							from: "CCMP Health Center Management System",
+							body: `Current number on Queue: ${currentNumberInQueue} \n
+							Your Queue number: ${queueNumber} \n
+							Please prepare.
+					 \n
+					 - Health Center Management System
+					 \n
+					 Please do not reply.
+					 `,
+							to: `${phoneNumber}`,
+							schedule: "1452244637",
+							custom_string: "this is a test",
+						},
+					],
+				},
+			};
+
+			axios
+				.request(options)
+				.then(function (response) {
+					console.log(response.data);
+				})
+				.catch(function (error) {
+					console.error(error);
+				});
+		}
 	}
 
 	const updateDoc = await Appointment.findByIdAndUpdate(

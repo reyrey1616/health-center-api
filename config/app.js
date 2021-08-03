@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, "../", "uploads")));
 
 // Rate limiting | to limit the number of API request of a single IP
 const limiter = rateLimit({
-	windowMs: 10 * 60 * 1000, //10 mins
+	windowMs: 10 * 60 * 10000, //10 mins
 	max: 100,
 });
 
