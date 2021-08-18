@@ -4,6 +4,10 @@ const Appointment = require("../models/Appointments");
 const Patient = require("../models/Patients");
 const Schedule = require("../models/ConsulationSchedules");
 const axios = require("axios");
+const client = require("twilio")(
+	"AC49874e20a4c2c95b64cd65fb6b54c7fa",
+	"59893433afeb9abae0d59316a6fe0e41"
+);
 
 exports.createAppointment = asyncHandler(async (req, res, next) => {
 	const { scheduleId, patientId } = req.params;
@@ -165,55 +169,76 @@ exports.updateOneAppointment = asyncHandler(async (req, res, next) => {
 	const nextNumberToText = queueNumber + 3;
 	const currentNumberInQueue = queueNumber + 1;
 
-	const scheduleDoc = await Appointment.findOne({
+	const appointmentDoc = await Appointment.findOne({
 		schedule: scheduleId,
 		queueNumber: nextNumberToText,
 	});
 
-	if (scheduleDoc) {
-		const phoneNumber = scheduleDoc.consultationForm.phoneNumber;
+	const scheduleDoc = await Schedule.findById(scheduleId);
+
+	if (appointmentDoc) {
+		const phoneNumber = appointmentDoc.consultationForm.phoneNumber;
+		console.log(nextNumberToText);
+		console.log(phoneNumber);
+
 		if (scheduleDoc.numberOfSlot >= nextNumberToText) {
 			console.log("TRIGGER SMS");
-			var options = {
-				method: "POST",
-				url: "https://clicksend.p.rapidapi.com/sms/send",
-				headers: {
-					"content-type": "application/json",
-					authorization:
-						"Basic a29sZW50YWJzQGdtYWlsLmNvbTpDb2xsZWVuMTIzQA==",
-					"x-rapidapi-key":
-						"66f1f0c9f8mshb5406ad89911fb6p113c85jsn16798b95eeb4",
-					"x-rapidapi-host": "clicksend.p.rapidapi.com",
-				},
-				data: {
-					messages: [
-						{
-							source: "mashape",
-							from: "CCMP Health Center Management System",
-							body: `Current number on Queue: ${currentNumberInQueue} \n
-							Your Queue number: ${queueNumber} \n
-							Please prepare.
-					 \n
-					 - Health Center Management System
-					 \n
-					 Please do not reply.
-					 `,
-							to: `${phoneNumber}`,
-							schedule: "1452244637",
-							custom_string: "this is a test",
-						},
-					],
-				},
-			};
 
-			axios
-				.request(options)
-				.then(function (response) {
-					console.log(response.data);
+			client.messages
+				.create({
+					body: `Current number on Queue: ${currentNumberInQueue} \n
+	Your Queue number: ${queueNumber} \n
+	Please prepare.
+\n
+- Health Center Management System
+\n
+Please do not reply.
+`,
+					from: "+16519278130",
+					to: `${phoneNumber}`,
 				})
-				.catch(function (error) {
-					console.error(error);
-				});
+				.then((message) => console.log(message.sid));
+
+			// var options = {
+			// 	method: "POST",
+			// 	url: "https://clicksend.p.rapidapi.com/sms/send",
+			// 	headers: {
+			// 		"content-type": "application/json",
+			// 		authorization:
+			// 			"Basic ZGFiYm95cmV5QGdtYWlsLmNvbTpHZW5lcmF0ZTEyMkA=",
+			// 		"x-rapidapi-key":
+			// 			"ce0c090ed7msh4f59305a9b6f07ap14fbd6jsn8d230dc37091",
+			// 		"x-rapidapi-host": "clicksend.p.rapidapi.com",
+			// 	},
+			// 	data: {
+			// 		messages: [
+			// 			{
+			// 				source: "mashape",
+			// 				from: "CCMP Health Center Management System",
+			// 				body: `Current number on Queue: ${currentNumberInQueue} \n
+			// 				Your Queue number: ${queueNumber} \n
+			// 				Please prepare.
+			// 		 \n
+			// 		 - Health Center Management System
+			// 		 \n
+			// 		 Please do not reply.
+			// 		 `,
+			// 				to: `${phoneNumber}`,
+			// 				schedule: "1452244637",
+			// 				custom_string: "this is a test",
+			// 			},
+			// 		],
+			// 	},
+			// };
+
+			// axios
+			// 	.request(options)
+			// 	.then(function (response) {
+			// 		console.log(response.data);
+			// 	})
+			// 	.catch(function (error) {
+			// 		console.error(error);
+			// 	});
 		}
 	}
 
