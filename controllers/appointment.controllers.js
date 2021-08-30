@@ -6,7 +6,7 @@ const Schedule = require("../models/ConsulationSchedules");
 
 const client = require("twilio")(
 	"AC49874e20a4c2c95b64cd65fb6b54c7fa",
-	"671f3db7ee3d1a15cdd43a6f94f19dbb"
+	"2145e49b50bab0d298ca9eff4672acc4"
 );
 
 exports.createAppointment = asyncHandler(async (req, res, next) => {
@@ -175,6 +175,33 @@ exports.updateOneAppointment = asyncHandler(async (req, res, next) => {
 	});
 
 	const scheduleDoc = await Schedule.findById(scheduleId);
+	console.log(`SCHEDULE CURRENT NUMBER: ${scheduleDoc.currentNumber}`);
+	if (scheduleDoc.currentNumber - 1 === 1) {
+		console.log("CURRENT NUMBER IS 1");
+		for (let i = 1; i <= 3; i++) {
+			const appointmentDoc = await Appointment.findOne({
+				schedule: scheduleId,
+				queueNumber: i,
+			});
+
+			const phoneNumber = appointmentDoc.consultationForm.phoneNumber;
+			console.log(i);
+			console.log(phoneNumber);
+			client.messages
+				.create({
+					body: `Current number on Queue: ${currentNumberInQueue} \n
+			Your Queue number: ${i} \n
+			Please prepare.
+			\n
+			- Health Center Management System
+			\n
+			Please do not reply.`,
+					from: "+16519278130",
+					to: `${phoneNumber}`,
+				})
+				.then((message) => console.log(message.sid));
+		}
+	}
 
 	if (appointmentDoc) {
 		const phoneNumber = appointmentDoc.consultationForm.phoneNumber;
@@ -187,7 +214,7 @@ exports.updateOneAppointment = asyncHandler(async (req, res, next) => {
 			client.messages
 				.create({
 					body: `Current number on Queue: ${currentNumberInQueue} \n
-					Your Queue number: ${queueNumber} \n
+					Your Queue number: ${nextNumberToText} \n
 					Please prepare.
 					\n
 					- Health Center Management System
